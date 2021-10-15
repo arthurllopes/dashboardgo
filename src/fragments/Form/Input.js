@@ -1,12 +1,18 @@
-import { Input, FormLabel, FormControl } from "@chakra-ui/react";
+import { Input, FormLabel, FormControl, FormErrorMessage } from "@chakra-ui/react";
+import { forwardRef } from "react";
 
-const InputComponent = ({name, label, ...props}) => {
+const InputBase = ({name, label, ...props}, ...ref) => {
     return (
-        <FormControl>
+        <FormControl isInvalid={props.error}>
             <FormLabel htmlFor={name}>{label}</FormLabel>
-            <Input name={name} type={props.type} focusBorderColor="pink.500" bgColor="gray.400" variant="filled" size="lg" />
+            <Input name={name} type={props.type} ref={ref} focusBorderColor="pink.500" bgColor="gray.400" variant="filled" size="lg" />
+            {props.error && (
+                <FormErrorMessage>
+                    {props.error.message}
+                </FormErrorMessage>
+            )}
         </FormControl>
     )
 }
 
-export default InputComponent
+export const InputComponent = forwardRef(InputBase)
