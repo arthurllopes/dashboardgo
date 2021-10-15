@@ -18,7 +18,7 @@ const UserManagment = () => {
                 <Box flex="1" borderRadius={8} bg="gray.700" mx="auto" p="8">
                     <Flex mb="8" justify="space-between" align="center">
                         <Heading size="lg" fontWeight="normal">Usuários</Heading>
-                        <Link href="users/create" passHref>
+                        <Link href="/users/create" passHref>
                             <Button as="a" size="sm" fontSize="sm" colorScheme="pink" leftIcon={<Icon fontSize="16" as={RiAddFill}/>}>
                                 Criar novo
                             </Button>
