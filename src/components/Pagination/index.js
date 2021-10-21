@@ -2,7 +2,8 @@ import React from 'react'
 import { Stack } from "@chakra-ui/react";
 import PagesComponent from './PagesComponent';
 
-const Pagination = () => {
+const Pagination = ({totalCountOfRegisters, currentPage, registerPerPage, pageChange}) => {
+
     return (
     <Stack
       direction={["column", "row"]}
@@ -11,7 +12,9 @@ const Pagination = () => {
       align="center"
       spacing="6"
     >
-      <PagesComponent />
+      <PagesComponent totalCountOfRegisters={totalCountOfRegisters} 
+      currentPage = {currentPage} registerPerPage={registerPerPage} pageChange={pageChange}
+      />
     </Stack>
     )
 }

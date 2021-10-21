@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 
-const ButtonFragment = ({ isCurrent = false, number}) => {
+const ButtonFragment = ({ isCurrent = false, number, pageChange}) => {
     if (isCurrent) {
         return (
             <Button
@@ -28,6 +28,7 @@ const ButtonFragment = ({ isCurrent = false, number}) => {
             _hover={{
                 bg: 'gray.500'
             }}
+            onClick={() => pageChange(number) }
         >
             {number}
         </Button>

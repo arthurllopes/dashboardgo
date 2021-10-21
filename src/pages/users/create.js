@@ -6,10 +6,17 @@ import Link from 'next/link'
 import {useForm} from 'react-hook-form'
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
+import { useMutation } from 'react-query'
+import { queryClient } from '../../services/queryClient'
+import {useRouter} from 'next/router'
+import {api} from '../../services/axios/api'
 
 
 const UserCreatePage = () => {
+    const router = useRouter()
+
     const createUserFormSchema = yup.object().shape({
+        name: yup.string().required('Nome obrigatório'),
         email: yup.string().required('Email obrigatório').email('Email inválido'),
         password: yup.string().required('Senha requerida').min(6, 'No mínimo 6 caracteres'),
         password_confirmation: yup.string().oneOf([null, yup.ref('password')], 'Senhas não estão iguais')
@@ -18,9 +25,25 @@ const UserCreatePage = () => {
     const {register, handleSubmit, formState} = useForm({
         resolver: yupResolver(createUserFormSchema)
     })
+
+    const createUser = useMutation(async (user) => {
+        const response = await api.post('users', {
+          user: {
+            ...user,
+            created_at: new Date(),
+          }
+        })
+    
+        return response.data.user;
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries('users')
+        }
+    })
     
     const handleCreateUser = async (values) => {
-        console.log(values)
+        await createUser.mutateAsync(values)
+        router.push('/users')
     }
 
     return (
@@ -35,7 +58,7 @@ const UserCreatePage = () => {
                     <Divider my="6" borderColor="gray.500" />
                     <VStack>
                         <SimpleGrid minChildWidth="240px" spacing="4" w="100%">
-                            <InputComponent name="nome" label="Nome completo" {...register('nome')} error={formState.errors?.name}/>
+                            <InputComponent name="name" label="Nome completo" {...register('name')} error={formState.errors?.name}/>
                             <InputComponent name="email" type="email" label="Email"  {...register('email')} error={formState.errors?.email}/>
                         </SimpleGrid>
                         <SimpleGrid minChildWidth="240px" w="100%" spacing="4">
